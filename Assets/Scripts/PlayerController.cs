@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
             {
                 ExitBoost();
             }
+            Parallax.instance.globalSpeed = boost;
         }
     }
 
@@ -84,6 +85,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isBoost", true);
         boost = boostPower;
         isBoosting = true;
+       
     }
 
     private void ExitBoost()
