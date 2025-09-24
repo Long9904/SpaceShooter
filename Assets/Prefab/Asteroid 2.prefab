@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6679952257789641454}
   m_Layer: 0
   m_Name: Asteroid 2
-  m_TagString: Obstracle
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b5d03c7f2850ff4d992ca23af769aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  speed: 5
+  speed: 7
 --- !u!50 &6679952257789641454
 Rigidbody2D:
   serializedVersion: 5
