@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float boostPower = 5f;
     private bool isBoosting = false;
+
+    [Header("Bullet")]
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint;
 
     void Awake()
     {
@@ -70,6 +75,10 @@ public class PlayerController : MonoBehaviour
             {
                 ExitBoost();
             }
+            else if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            }
             Parallax.instance.globalSpeed = boost;
         }
     }
@@ -85,7 +94,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isBoost", true);
         boost = boostPower;
         isBoosting = true;
-       
+
     }
 
     private void ExitBoost()
