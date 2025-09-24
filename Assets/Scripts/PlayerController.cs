@@ -103,4 +103,20 @@ public class PlayerController : MonoBehaviour
         boost = 1f;
         isBoosting = false;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            Destroy(collision.gameObject);
+        }
+        else if(collision.CompareTag("Gas"))
+        {
+            Destroy(collision.gameObject);
+        }
+        else if(collision.CompareTag("Shield"))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
 }

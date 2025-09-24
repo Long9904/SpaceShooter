@@ -5,7 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Bullet
-  - Obstracle
+  - Obstacle
+  - Gas
+  - Shield
   layers:
   - Default
   - TransparentFX

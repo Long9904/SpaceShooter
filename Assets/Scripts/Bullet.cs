@@ -4,8 +4,7 @@ public class Bullet : MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] private float speed = 10f;
-    //[SerializeField] private float lifeTime = 3f;
-    [SerializeField] private int damage = 1;
+    //[SerializeField] private int damage = 1;
     [SerializeField] private float bound = 10f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,7 +23,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Obstracle"))
+        if(collision.CompareTag("Obstacle"))
         {
             Destroy(gameObject);
             Destroy(collision.gameObject);
