@@ -12,6 +12,18 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float moveSpeed;
 
+    // Mana system
+    [SerializeField] private float energy;
+    [SerializeField] private float maxEnergy;
+    [SerializeField] private float energyRegen;
+
+    // Health system
+    [SerializeField] private float health;
+    [SerializeField] private float maxHealth;
+
+    [Header("Destroy Effect")]
+    [SerializeField] private GameObject destroyEffect;
+
     /* 
      - Boost variables will not effect the player's actual speed, but will be used in other scripts to modify behavior like shooting rate, scense, background, enemy speed, obstacle speed.
 
@@ -48,6 +60,13 @@ public class PlayerController : MonoBehaviour
         // Get the Rigidbody component attached to the player GameObject
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        rb.freezeRotation = true;
+
+        energy = maxEnergy;
+        UIController.Instance.UpdateEnergySlider(energy, maxEnergy);
+
+        health = maxHealth;
+        UIController.Instance.UpdateHealthSlider(health, maxHealth);
     }
 
 
@@ -88,14 +107,29 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(playerDirection.x * moveSpeed, playerDirection.y * moveSpeed);
+
+        if (isBoosting)
+        {
+            // Consume mana 
+            if (energy >= 0.2f) energy -= 0.2f;
+            else ExitBoost();
+        }
+        else
+        {
+            // Recover mana
+            if (energy < maxEnergy) energy += energyRegen;
+        }
+        UIController.Instance.UpdateEnergySlider(energy, maxEnergy);
     }
 
     private void EnterBoost()
     {
-        animator.SetBool("isBoost", true);
-        boost = boostPower;
-        isBoosting = true;
-
+        if (energy > 10)
+        {
+            animator.SetBool("isBoost", true);
+            boost = boostPower;
+            isBoosting = true;
+        }
     }
 
     private void ExitBoost()
@@ -109,7 +143,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Obstacle"))
         {
-
+            TakeDamage(1);
             Destroy(collision.gameObject);
         }
         else if (collision.CompareTag("Gas"))
@@ -120,9 +154,42 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
-        else if (collision.CompareTag("BulletEn"))
+        //else if (collision.CompareTag("BulletEn"))
+        //{
+        //    TakeDamage(1);
+        //    Destroy(collision.gameObject);
+        //}
+        //else if (collision.CompareTag("Enemy"))
+        //{
+        //    TakeDamage(1);
+        //    Destroy(collision.gameObject);
+        //}
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("BulletEn"))
         {
+            TakeDamage(1);
             Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(1);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void TakeDamage(int damage)
+    {
+        health -= damage;
+        UIController.Instance.UpdateHealthSlider(health, maxHealth);
+        if (health <= 0)
+        {
+            boost = 1f;
+            gameObject.SetActive(false);
+            // Clone the destroy effect at the player's position and rotation
+            Instantiate(destroyEffect, transform.position, transform.rotation);
         }
     }
 }

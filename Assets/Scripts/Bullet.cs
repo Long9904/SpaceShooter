@@ -49,8 +49,16 @@ public class Bullet : MonoBehaviour
         else if (collision.CompareTag("Player"))
         {
             Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
             Destroy(gameObject);
-            
         }
     }
 }
