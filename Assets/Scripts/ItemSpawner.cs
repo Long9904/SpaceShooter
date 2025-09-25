@@ -1,4 +1,5 @@
 using Unity.Hierarchy;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
@@ -32,6 +33,7 @@ public class ItemSpawner : MonoBehaviour
             return;
         }
         GameObject item = Instantiate(itemPrefabs[randomIndex], spawnPosition, Quaternion.identity);
+        item.transform.rotation = Quaternion.Euler(0, 0, -90f);
         Destroy(item, lifetime);
     }
 }

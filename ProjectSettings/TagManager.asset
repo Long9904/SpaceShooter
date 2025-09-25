@@ -8,6 +8,8 @@ TagManager:
   - Obstacle
   - Gas
   - Shield
+  - BulletEn
+  - Enemy
   layers:
   - Default
   - TransparentFX

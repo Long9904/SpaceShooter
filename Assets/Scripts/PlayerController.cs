@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
 
+
     void Awake()
     {
         if (Instance != null)
@@ -108,13 +109,18 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Obstacle"))
         {
+
             Destroy(collision.gameObject);
         }
-        else if(collision.CompareTag("Gas"))
+        else if (collision.CompareTag("Gas"))
         {
             Destroy(collision.gameObject);
         }
-        else if(collision.CompareTag("Shield"))
+        else if (collision.CompareTag("Shield"))
+        {
+            Destroy(collision.gameObject);
+        }
+        else if (collision.CompareTag("BulletEn"))
         {
             Destroy(collision.gameObject);
         }
