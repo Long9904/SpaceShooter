@@ -28,8 +28,8 @@ public class ItemSpawner : MonoBehaviour
         float randomY = Random.Range(minY, maxY);
         Vector3 spawnPosition = new Vector3(transform.position.x, randomY, 0f);
         Collider2D hit = Physics2D.OverlapCircle(spawnPosition, 0.5f);
-        if (hit != null)
-        {            
+        if (hit != null && gameObject.layer.Equals("Obstacle"))
+        {
             return;
         }
         GameObject item = Instantiate(itemPrefabs[randomIndex], spawnPosition, Quaternion.identity);
