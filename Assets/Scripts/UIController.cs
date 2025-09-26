@@ -20,6 +20,33 @@ public class UIController : MonoBehaviour
     public float score { get; set; }
     public GameObject pausePanel;
 
+    public GameObject gameMenuPanel;
+    public GameObject[] gameplayObjects;
+
+    void Start()
+    {
+        gameMenuPanel.SetActive(true);
+
+        foreach (var obj in gameplayObjects)
+        {
+            obj.SetActive(false);
+        }
+
+        Time.timeScale = 1f;
+    }
+
+    public void StartGame()
+    {
+        gameMenuPanel.SetActive(false);
+
+        foreach (var obj in gameplayObjects)
+        {
+            obj.SetActive(true);
+        }
+
+        Time.timeScale = 1f;
+    }
+
     void Awake()
     {
         if (Instance != null)
