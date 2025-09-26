@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,17 +10,23 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 playerDirection;
     private Animator animator;
-
+   
     [SerializeField] private float moveSpeed;
 
-    // Mana system
+    [Header("Mana Bar")]
     [SerializeField] private float energy;
     [SerializeField] private float maxEnergy;
     [SerializeField] private float energyRegen;
 
-    // Health system
+    [Header("Health Bar")]
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
+
+    [Header("Gas Bar")]
+    [SerializeField] private float gas;
+    [SerializeField] private float gasRegen;
+    [SerializeField] private float gasDownRate;
+    [SerializeField] private float maxGas;
 
     [Header("Destroy Effect")]
     [SerializeField] private GameObject destroyEffect;
@@ -42,12 +49,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
 
+    [Header("Shield")]
+    [SerializeField] private GameObject shieldPrefab;
+
 
     void Awake()
     {
         if (Instance != null)
         {
             Destroy(gameObject);
+           
         }
         else
         {
@@ -67,6 +78,9 @@ public class PlayerController : MonoBehaviour
 
         health = maxHealth;
         UIController.Instance.UpdateHealthSlider(health, maxHealth);
+
+        gas = maxGas;
+        UIController.Instance.UpdateGasSlider(gas, maxGas);
     }
 
 
@@ -98,8 +112,11 @@ public class PlayerController : MonoBehaviour
             else if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+                AudioManagement.instance.PlayShooter();
             }
             Parallax.instance.globalSpeed = boost;
+            GasDown();
+
         }
     }
 
@@ -148,27 +165,18 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.CompareTag("Gas"))
         {
+            FillGas(gasRegen);
             Destroy(collision.gameObject);
+            AudioManagement.instance.PlayLootItem();
         }
         else if (collision.CompareTag("Shield"))
         {
+            StartCoroutine(ActiveShield());
             Destroy(collision.gameObject);
-        }
-        //else if (collision.CompareTag("BulletEn"))
-        //{
-        //    TakeDamage(1);
-        //    Destroy(collision.gameObject);
-        //}
-        //else if (collision.CompareTag("Enemy"))
-        //{
-        //    TakeDamage(1);
-        //    Destroy(collision.gameObject);
-        //}
-    }
+            AudioManagement.instance.PlayLootItem();
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("BulletEn"))
+        }
+        else if (collision.gameObject.CompareTag("BulletEn"))
         {
             TakeDamage(1);
             Destroy(collision.gameObject);
@@ -178,10 +186,17 @@ public class PlayerController : MonoBehaviour
             TakeDamage(1);
             Destroy(collision.gameObject);
         }
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
     }
 
     private void TakeDamage(int damage)
     {
+        if(shieldPrefab.activeSelf) return;
         health -= damage;
         UIController.Instance.UpdateHealthSlider(health, maxHealth);
         if (health <= 0)
@@ -190,6 +205,34 @@ public class PlayerController : MonoBehaviour
             gameObject.SetActive(false);
             // Clone the destroy effect at the player's position and rotation
             Instantiate(destroyEffect, transform.position, transform.rotation);
+            return;
         }
+        StartCoroutine(GetHit());
+        AudioManagement.instance.PlayHit();
+
+    }
+    private void GasDown()
+    {
+        gas -= gasDownRate * Time.deltaTime;
+        UIController.Instance.UpdateGasSlider(gas, maxGas);
+    }
+    private void FillGas(float amount)
+    {
+        gas += amount;
+        if (gas > maxGas) gas = maxGas;
+        UIController.Instance.UpdateGasSlider(gas, maxGas);
+    }
+
+    private IEnumerator ActiveShield()
+    {
+        shieldPrefab.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        shieldPrefab.SetActive(false);
+    }
+    private IEnumerator GetHit()
+    {
+        animator.SetBool("isHit", true);
+        yield return new WaitForSeconds(1.5f);
+        animator.SetBool("isHit", false);
     }
 }
