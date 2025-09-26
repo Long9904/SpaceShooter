@@ -57,7 +57,7 @@ public class UIController : MonoBehaviour
         else
         {
             Instance = this;
-           
+
         }
     }
 
