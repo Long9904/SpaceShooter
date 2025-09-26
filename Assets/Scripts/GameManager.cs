@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -6,15 +7,30 @@ public class GameManager : MonoBehaviour
 
     public float worldSpeed;
 
+    public float ScoreWin = 200f;
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
+
+        }
+    }
+    void Start()
+    {
+        AudioManagement.instance.PlayBackgroundMusic();
+    }
+    private void Update()
+    { 
+        UIController.Instance.UpdateScore(Time.deltaTime);
+        if(UIController.Instance.score >= ScoreWin)
+        {
+            SceneController.Instance.NextLevel();
         }
     }
 }

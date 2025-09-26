@@ -34,31 +34,33 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Obstacle"))
+        if (collision.CompareTag("Obstacle") && target == targetType.Player)
+        {
+            Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
+            UIController.Instance.UpdateScore(10);
+            Destroy(gameObject);
+            Destroy(collision.gameObject);
+            AudioManagement.instance.PlayHitEn();
+        }
+        else if (collision.CompareTag("Enemy") && target == targetType.Player)
+        {
+            Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
+            UIController.Instance.UpdateScore(15);
+            Destroy(gameObject);
+            Destroy(collision.gameObject);
+            AudioManagement.instance.PlayHitEn();
+        }
+        else if (collision.gameObject.CompareTag("Player"))
         {
             Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
             Destroy(gameObject);
-            Destroy(collision.gameObject);
         }
-        else if (collision.CompareTag("Enemy"))
-        {
-            Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
-            Destroy(gameObject);
-            Destroy(collision.gameObject);
-        }
-        else if (collision.CompareTag("Player"))
-        {
-            Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
-        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
+       
     }
 }

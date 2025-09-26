@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -12,6 +13,11 @@ public class UIController : MonoBehaviour
     [SerializeField] private Slider healthSlider;
     [SerializeField] private TMP_Text healthText;
 
+    [SerializeField] private Slider gasSlider;
+    [SerializeField] private TMP_Text gasText;
+
+    [SerializeField] private TMP_Text scoreText;
+    public float score { get; set; }
     public GameObject pausePanel;
 
     void Awake()
@@ -19,10 +25,12 @@ public class UIController : MonoBehaviour
         if (Instance != null)
         {
             Destroy(gameObject);
+
         }
         else
         {
             Instance = this;
+           
         }
     }
 
@@ -38,5 +46,16 @@ public class UIController : MonoBehaviour
         healthSlider.maxValue = max;
         healthSlider.value = Mathf.RoundToInt(current);
         healthText.text = healthSlider.value + "/" + healthSlider.maxValue;
+    }
+    public void UpdateGasSlider(float current, float max)
+    {
+        gasSlider.maxValue = max;
+        gasSlider.value = Mathf.RoundToInt(current);
+        gasText.text = gasSlider.value + "/" + gasSlider.maxValue;
+    }
+    public void UpdateScore(float amount)
+    {
+        score += amount;
+        scoreText.text = "Score : " + Mathf.RoundToInt(score);
     }
 }
