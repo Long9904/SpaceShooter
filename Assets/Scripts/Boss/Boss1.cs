@@ -81,7 +81,7 @@ public class Boss1 : MonoBehaviour
             BossUIController.Instance.UpdateBossHealthSlider(health, maxHealth);
         }
 
-        AudioManagement.instance.PlayBackgroundMusic();
+        AudioManagement.instance.PlayBackgroundBossMusic();
     }
 
 

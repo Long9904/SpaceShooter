@@ -21,10 +21,6 @@ public class GameManager : MonoBehaviour
 
         }
     }
-    void Start()
-    {
-        AudioManagement.instance.PlayBackgroundMusic();
-    }
     private void Update()
     { 
         UIController.Instance.UpdateScore(Time.deltaTime);

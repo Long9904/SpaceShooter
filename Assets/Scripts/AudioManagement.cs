@@ -14,12 +14,14 @@ public class AudioManagement : MonoBehaviour
     public AudioClip cutsceneBoss;
     public AudioClip hitEn;
     public AudioClip backgroundMusic;
+    public AudioClip backgroundBossMusic;
     public AudioClip bossSumon;
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -68,6 +70,17 @@ public class AudioManagement : MonoBehaviour
     public void PlayBackgroundMusic()
     {
         source.clip = backgroundMusic;
+        source.loop = true;
+        source.Play();
+    }
+   
+    public void StopMusic()
+    {
+        source.Stop();
+    }
+    public void PlayBackgroundBossMusic()
+    {
+        source.clip = backgroundBossMusic;
         source.loop = true;
         source.Play();
     }
