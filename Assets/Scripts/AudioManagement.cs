@@ -14,7 +14,8 @@ public class AudioManagement : MonoBehaviour
     public AudioClip cutsceneBoss;
     public AudioClip hitEn;
     public AudioClip backgroundMusic;
-    public AudioClip startMusic;
+    public AudioClip backgroundBossMusic;
+    public AudioClip bossSumon;
     private void Awake()
     {
         if (instance == null)
@@ -62,20 +63,25 @@ public class AudioManagement : MonoBehaviour
     {
         source.PlayOneShot(hitEn);
     }
+    public void PlayBossSumon()
+    {
+        source.PlayOneShot(bossSumon);
+    }
     public void PlayBackgroundMusic()
     {
         source.clip = backgroundMusic;
         source.loop = true;
         source.Play();
     }
-    public void PlayStartMusic()
-    {
-        source.clip = startMusic;
-        source.loop = true;
-        source.Play();
-    }
+   
     public void StopMusic()
     {
         source.Stop();
+    }
+    public void PlayBackgroundBossMusic()
+    {
+        source.clip = backgroundBossMusic;
+        source.loop = true;
+        source.Play();
     }
 }

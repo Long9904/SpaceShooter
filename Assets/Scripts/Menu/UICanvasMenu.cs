@@ -7,7 +7,7 @@ public class UICanvasMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AudioManagement.instance.PlayStartMusic();
+       
     }
 
     // Update is called once per frame

@@ -48,8 +48,11 @@ public class Boss1 : MonoBehaviour
     public float spiralAngleStep = 10f;
     private float angle = 0f;
 
+    [Header("Rotation Bullet")]
+    public float rotateSpeed = 3f;
 
     private Vector3 randomTarget;
+    private Rigidbody2D rb;
 
     void Start()
     {
@@ -63,7 +66,7 @@ public class Boss1 : MonoBehaviour
         if (isClone)
         {
             transform.Rotate(0f, 0f, -90);
-            maxHealth = 8;
+            maxHealth = 10;
             health = maxHealth;
 
             randomTarget = new Vector3(
@@ -78,7 +81,7 @@ public class Boss1 : MonoBehaviour
             BossUIController.Instance.UpdateBossHealthSlider(health, maxHealth);
         }
 
-        AudioManagement.instance.PlayBackgroundMusic();
+        AudioManagement.instance.PlayBackgroundBossMusic();
     }
 
 
@@ -98,34 +101,43 @@ public class Boss1 : MonoBehaviour
             StartCoroutine(BossPunch());
             timerPunch = 0f;
             punchCooldown = Random.Range(5f, 10f); // reset timer with new random cooldown
-        }
-        if (fireTimer >= fireRate && !animator.GetBool("isCharging") && health >= maxHealth * 0.6f)
+        }// Boss punch attack
+
+        if (fireTimer >= fireRate && !animator.GetBool("isCharging") && health >= maxHealth * 0.7f
+            || isClone && fireTimer >= fireRate && !animator.GetBool("isCharging"))
         {
             StartCoroutine(DelayShoot());
             fireTimer = 0f;
             fireRate -= 0.1f; // Increase fire rate over time
             if (fireRate <= 0.4f) fireRate = 0.5f;
-        }
-        if (!isClone 
+        } // Normal shooting hen health > 60% or if it's a clone
+
+        if (!isClone
             && bulletHellTimer >= bulletHellCooldown
-            && !animator.GetBool("isCharging") 
-            && health < maxHealth * 0.6f
+            && !animator.GetBool("isCharging")
+            && health < maxHealth * 0.7f
             && health > maxHealth * 0.3)
         {
             StartCoroutine(SpiralBulletHell());
             bulletHellTimer = 0f;
-        }
-        if (fireTimer >= fireRate 
-            && !isClone 
-            && !animator.GetBool("isCharging") 
-            && health <= maxHealth * 0.3f)
+        } // Bullet hell when health < 60%
+
+
+
+    }
+
+    void FixedUpdate()
+    {
+        if (fireTimer >= fireRate
+           && !isClone
+           && !animator.GetBool("isCharging")
+           && health <= maxHealth * 0.3f)
         {
             StartCoroutine(DelayShoot());
             fireTimer = 0f;
-            fireRate -= 0.1f; 
-            if (fireRate <= 0.4f) fireRate = 1.1f;
-        }
-
+            fireRate -= 0.1f;
+            if (fireRate <= 0.4f) fireRate = 1f;
+        } // Super bullet when health < 30%
     }
 
     IEnumerator MoveIn()
@@ -211,31 +223,32 @@ public class Boss1 : MonoBehaviour
 
         animator.SetBool("isCharging", false);
     }
-
     void ShootBullet()
     {
-        if ( health <= maxHealth * 0.3f && !isClone)
+        Vector3 playerPos = (player.position - firePoint.position).normalized;
+
+        if (health <= maxHealth * 0.3f && !isClone)
         {
-            // Shoot super bullet
+            BossPlayerController.Instance.damageEarned = 2;
+            // Shoot homing super bullet
             GameObject superBullet = Instantiate(superBulletPrefab, firePoint.position, firePoint.rotation);
-            Rigidbody2D rbSuper = superBullet.GetComponent<Rigidbody2D>();
-            if (rbSuper != null)
+
+            HomingBullet homing = superBullet.GetComponent<HomingBullet>();
+            if (homing != null)
             {
-                Vector3 playerPos = (player.position - firePoint.position).normalized;
-                rbSuper.linearVelocity = playerPos * (bulletSpeed + 2f); // Super bullet is faster
+                homing.targetObject = player;
+                homing.speed = bulletSpeed + 3f;  // speed up the super bullet
             }
-            return;
         }
-
-        GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
-
-        Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        else
         {
-            Vector3 playerPos = (player.position - firePoint.position).normalized;
-            rb.linearVelocity = playerPos * bulletSpeed;
+            // Shoot normal laser
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+            if (rb != null) rb.linearVelocity = playerPos * bulletSpeed;
         }
     }
+
 
     IEnumerator DelayShoot()
     {
@@ -243,9 +256,9 @@ public class Boss1 : MonoBehaviour
         ShootBullet();
 
 
-        if (health <= maxHealth * 0.75f)
+        if (health <= maxHealth * 0.8f)
         {
-            yield return new WaitForSeconds(0.3f); // delay 
+            yield return new WaitForSeconds(0.2f); // delay 
             ShootBullet();
         }
 
@@ -265,12 +278,8 @@ public class Boss1 : MonoBehaviour
     {
         health -= damage;
 
-        if (health <= maxHealth * 0.3f && !isClone)
-        {
-            bossSpeed = 1.2f;
-        }
 
-            if (!isClone)
+        if (!isClone)
         {
             BossUIController.Instance.UpdateBossHealthSlider(health, maxHealth);
         }
@@ -295,6 +304,7 @@ public class Boss1 : MonoBehaviour
 
     public void SplitBoss()
     {
+        AudioManagement.instance.PlayBossSumon();
         for (int i = 0; i < cloneCount; i++)
         {
             float randomX = Random.Range(minX, maxX);
@@ -310,7 +320,7 @@ public class Boss1 : MonoBehaviour
 
     private IEnumerator SpiralBulletHell()
     {
-       
+
         for (int i = 0; i < spiralBullets; i++)
         {
 

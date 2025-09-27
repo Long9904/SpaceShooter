@@ -506,7 +506,8 @@ MonoBehaviour:
   cutsceneBoss: {fileID: 8300000, guid: 7103d1cacd5049b4386c74b87a8e1f69, type: 3}
   hitEn: {fileID: 8300000, guid: a233059e5eb8d2b44a147aa691bc007f, type: 3}
   backgroundMusic: {fileID: 8300000, guid: 448b2866ed090e54fb224837d6eada58, type: 3}
-  startMusic: {fileID: 8300000, guid: e5d27bdf58fc7e64d9b1920d2cf9730d, type: 3}
+  backgroundBossMusic: {fileID: 8300000, guid: c17b963b87f31f14f87a28c3221321ed, type: 3}
+  bossSumon: {fileID: 8300000, guid: e2dadc2d31f12b743ae08043a6b4096b, type: 3}
 --- !u!82 &474897102
 AudioSource:
   m_ObjectHideFlags: 0
@@ -518,7 +519,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 7103d1cacd5049b4386c74b87a8e1f69, type: 3}
+  m_Resource: {fileID: 8300000, guid: e5d27bdf58fc7e64d9b1920d2cf9730d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.685
   m_Pitch: 1
