@@ -10,6 +10,7 @@ TagManager:
   - Shield
   - BulletEn
   - Enemy
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Boundaries
   - Obstacle
   - Player
-  - 
+  - Boss
   - 
   - 
   - 
@@ -55,6 +56,9 @@ TagManager:
     locked: 0
   - name: BackGround
     uniqueID: 105456973
+    locked: 0
+  - name: Boss
+    uniqueID: 885343527
     locked: 0
   m_RenderingLayers:
   - Default
