@@ -19,10 +19,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
     public float score { get; set; }
     public GameObject pausePanel;
-
-    public GameObject gameMenuPanel;
-    public GameObject[] gameplayObjects;
-
   
     void Awake()
     {
@@ -36,6 +32,7 @@ public class UIController : MonoBehaviour
             Instance = this;
 
         }
+        AudioManagement.instance.PlayBackgroundMusic();
     }
 
     public void UpdateEnergySlider(float current, float max)
