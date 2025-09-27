@@ -53,9 +53,12 @@ public class Boss1 : MonoBehaviour
 
         if (isClone)
         {
+            // Rotaion z
+            transform.Rotate(0f, 0f, -90);
             maxHealth = 5;
             health = maxHealth;
         }
+        AudioManagement.instance.PlayBackgroundMusic();
     }
 
     void Update()
@@ -193,6 +196,8 @@ public class Boss1 : MonoBehaviour
             SplitBoss();
             hasSplit = true;
         }
+
+        AudioManagement.instance.PlayHitEn();
 
         if (health <= 0)
         {

@@ -160,6 +160,7 @@ public class BossPlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         } else if (collision.gameObject.CompareTag("Boss"))
         {
+           
             TakeDamage(2);
        
         }
@@ -178,6 +179,7 @@ public class BossPlayerController : MonoBehaviour
             return;
         }
         StartCoroutine(GetHit());
+        AudioManagement.instance.PlayHit();
     }
 
     private IEnumerator GetHit()

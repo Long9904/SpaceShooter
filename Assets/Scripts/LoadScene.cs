@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class LoadScene : MonoBehaviour
 {
-    [SerializeField] private string sceneName;
+    //[SerializeField] private string sceneName;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void LoadNextScene()
     {
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation async = SceneManager.LoadSceneAsync("Boss");
         async.allowSceneActivation = true;
         //SceneController.Instance.NextLevel(); // Use SceneController to load next level
 
