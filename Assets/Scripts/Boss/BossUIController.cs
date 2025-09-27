@@ -1,11 +1,10 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
+public class BossUIController : MonoBehaviour
 {
-    public static UIController Instance;
+    public static BossUIController Instance;
 
     [SerializeField] private Slider energySlider;
     [SerializeField] private TMP_Text energyText;
@@ -13,28 +12,19 @@ public class UIController : MonoBehaviour
     [SerializeField] private Slider healthSlider;
     [SerializeField] private TMP_Text healthText;
 
-    [SerializeField] private Slider gasSlider;
-    [SerializeField] private TMP_Text gasText;
+    [SerializeField] private Slider bossHealthSlider;
+    [SerializeField] private TMP_Text bossHealthText;
 
-    [SerializeField] private TMP_Text scoreText;
-    public float score { get; set; }
-    public GameObject pausePanel;
 
-    public GameObject gameMenuPanel;
-    public GameObject[] gameplayObjects;
-
-  
     void Awake()
     {
         if (Instance != null)
         {
             Destroy(gameObject);
-
         }
         else
         {
             Instance = this;
-
         }
     }
 
@@ -51,15 +41,11 @@ public class UIController : MonoBehaviour
         healthSlider.value = Mathf.RoundToInt(current);
         healthText.text = healthSlider.value + "/" + healthSlider.maxValue;
     }
-    public void UpdateGasSlider(float current, float max)
+   
+    public void UpdateBossHealthSlider(float current, float max)
     {
-        gasSlider.maxValue = max;
-        gasSlider.value = Mathf.RoundToInt(current);
-        gasText.text = gasSlider.value + "/" + gasSlider.maxValue;
-    }
-    public void UpdateScore(float amount)
-    {
-        score += amount;
-        scoreText.text = "Score : " + Mathf.RoundToInt(score);
+        bossHealthSlider.maxValue = max;
+        bossHealthSlider.value = Mathf.RoundToInt(current);
+        bossHealthText.text = bossHealthSlider.value + "/" + bossHealthSlider.maxValue;
     }
 }

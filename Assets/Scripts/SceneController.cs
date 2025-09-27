@@ -6,17 +6,24 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController Instance { get; private set; }
     [SerializeField] Animator animator;
+    [SerializeField] GameObject transitionPrefab;
     private bool isLoading = false;
-    private void Awake()
+    void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
         {
-            Destroy(this.gameObject);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            if (animator == null)
+            {
+                GameObject transObj = Instantiate(transitionPrefab);
+                DontDestroyOnLoad(transObj);
+                animator = transObj.GetComponent<Animator>();
+            }
         }
         else
         {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            Destroy(gameObject);
         }
     }
 

@@ -55,6 +55,11 @@ public class Bullet : MonoBehaviour
             Instantiate(explosionEffectPrefab, collision.transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
+        else if (collision.CompareTag("Boss"))
+        {
+            Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(gameObject);       
+        }
 
     }
 

@@ -1,13 +1,9 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public class Boss1 : MonoBehaviour
 {
 
-    private float speedX;
-    private float speedY;
-    private bool isCharging;
 
     [SerializeField] private float bossSpeed = 1f;
     public Transform player;
@@ -23,11 +19,25 @@ public class Boss1 : MonoBehaviour
     private float chargeSpeed = 8f;
 
     [Header("Fire Points")]
-    public GameObject laserPrefab;   
-    public Transform firePoint; 
+    public GameObject laserPrefab;
+    public Transform firePoint;
     public float bulletSpeed = 7f;
-    public float fireRate = 3f;      
+    public float fireRate = 3f;
     private float fireTimer;
+
+    [Header("Health")]
+    public float maxHealth;
+    private float health;
+
+    [Header("Destroy Effect")]
+    [SerializeField] private GameObject destroyEffect;
+
+    [Header("Boss Clone")]
+    private bool isClone = false;
+    private bool hasSplit = false;
+    [SerializeField] private GameObject bossPrefab; // prefab boss
+    [SerializeField] private int cloneCount = 2;    // 
+    [SerializeField] private float spawnRadius = 5f; //
 
     void Start()
     {
@@ -38,6 +48,17 @@ public class Boss1 : MonoBehaviour
 
         punchCooldown = Random.Range(5f, 10f);
         timerPunch = 0f;
+        health = maxHealth;
+        BossUIController.Instance.UpdateBossHealthSlider(health, maxHealth);
+
+        if (isClone)
+        {
+            // Rotaion z
+            transform.Rotate(0f, 0f, -90);
+            maxHealth = 5;
+            health = maxHealth;
+        }
+        AudioManagement.instance.PlayBackgroundMusic();
     }
 
     void Update()
@@ -51,12 +72,14 @@ public class Boss1 : MonoBehaviour
             StartCoroutine(BossPunch());
             timerPunch = 0f;
             punchCooldown = Random.Range(5f, 10f); // reset timer with new random cooldown
-        } else if (fireTimer >= fireRate && !animator.GetBool("isCharging"))
+        }
+        else if (fireTimer >= fireRate && !animator.GetBool("isCharging"))
         {
-            ShootLaser();
+            StartCoroutine(DelayShoot());
             fireTimer = 0f;
             fireRate -= 0.1f; // Increase fire rate over time
-            if (fireRate < 1f) fireRate = 1f;
+            if (fireRate <= 0.4f) fireRate = 0.5f;
+
         }
 
     }
@@ -127,10 +150,10 @@ public class Boss1 : MonoBehaviour
 
     void ShootLaser()
     {
-        
+
         GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
 
-     
+
         Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
@@ -139,4 +162,62 @@ public class Boss1 : MonoBehaviour
         }
     }
 
+    IEnumerator DelayShoot()
+    {
+        yield return new WaitForSeconds(0.2f);
+        ShootLaser();
+
+  
+        if (health <= maxHealth * 0.75f)
+        {
+            yield return new WaitForSeconds(0.3f); // delay 
+            ShootLaser();
+        }
+       
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet"))
+        {
+            TakeDamage(1);
+            Destroy(collision.gameObject);
+        }
+    }
+
+
+    private void TakeDamage(int damage)
+    {
+        health -= damage;
+        BossUIController.Instance.UpdateBossHealthSlider(health, maxHealth);
+
+        if (health <= maxHealth / 2 && !hasSplit)
+        {
+            SplitBoss();
+            hasSplit = true;
+        }
+
+        AudioManagement.instance.PlayHitEn();
+
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+            // Clone the destroy effect at the player's position and rotation
+            Instantiate(destroyEffect, transform.position, transform.rotation);
+            return;
+        }
+
+    }
+
+    public void SplitBoss()
+    {
+        for (int i = 0; i < cloneCount; i++)
+        {
+            Vector3 spawnPos = transform.position + (Vector3)Random.insideUnitCircle * spawnRadius;
+
+            GameObject clone = Instantiate(bossPrefab, spawnPos, Quaternion.identity);
+
+            clone.GetComponent<Boss1>().isClone = true;
+        }
+    }
 }
