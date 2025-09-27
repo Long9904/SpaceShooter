@@ -14,6 +14,7 @@ public class AudioManagement : MonoBehaviour
     public AudioClip cutsceneBoss;
     public AudioClip hitEn;
     public AudioClip backgroundMusic;
+    public AudioClip bossSumon;
     private void Awake()
     {
         if (instance == null)
@@ -59,6 +60,10 @@ public class AudioManagement : MonoBehaviour
     public void PlayHitEn()
     {
         source.PlayOneShot(hitEn);
+    }
+    public void PlayBossSumon()
+    {
+        source.PlayOneShot(bossSumon);
     }
     public void PlayBackgroundMusic()
     {

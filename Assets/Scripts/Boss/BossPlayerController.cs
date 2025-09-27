@@ -6,6 +6,8 @@ public class BossPlayerController : MonoBehaviour
 {
     public static BossPlayerController Instance;
 
+    public int damageEarned = 1;
+
 
     private Rigidbody2D rb;
     private Vector2 playerDirection;
@@ -151,7 +153,7 @@ public class BossPlayerController : MonoBehaviour
         }     
         else if (collision.gameObject.CompareTag("BulletEn"))
         {
-            TakeDamage(1);
+            TakeDamage(damageEarned);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("Enemy"))
