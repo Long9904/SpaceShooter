@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4230304717081886879}
   - component: {fileID: 1528837099835352612}
   - component: {fileID: 7873961906680695853}
-  - component: {fileID: 6842995047850786605}
-  m_Layer: 9
+  - component: {fileID: 3612864948425291508}
+  m_Layer: 10
   m_Name: Super Boss Bullet
   m_TagString: BulletEn
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6842995047850786605
+--- !u!114 &3612864948425291508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,10 +188,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1318550646605903966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7248b84d52c99e44b5e720b8f8413a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a35deb9a6a82044fa840dacaeead1e7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bullet
+  m_EditorClassIdentifier: Assembly-CSharp::HomingBullet
+  targetObject: {fileID: 0}
   speed: 10
-  bound: 10
   explosionEffectPrefab: {fileID: 1040534402643588798, guid: 61f3d38f754ec2449a4ffa0f6ef5c0de, type: 3}
   target: 1
+  lifeTime: 1.8
+  homingDelay: 1
