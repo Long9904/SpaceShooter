@@ -265,7 +265,12 @@ public class Boss1 : MonoBehaviour
     {
         health -= damage;
 
-        if (!isClone)
+        if (health <= maxHealth * 0.3f && !isClone)
+        {
+            bossSpeed = 1.2f;
+        }
+
+            if (!isClone)
         {
             BossUIController.Instance.UpdateBossHealthSlider(health, maxHealth);
         }
