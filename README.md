@@ -26,4 +26,8 @@ Goal: survive as long as possible while managing **Gas (fuel)**, **Energy**, and
 1. Clone the repo:
    ```bash
    https://github.com/Long9904/SpaceShooter.git
+## References
 
+- [Unity Documentation](https://docs.unity3d.com/Manual/index.html) 
+- [Unity 2D Game Kit](https://learn.unity.com/project/2d-game-kit) 
+- [Asset & Tutorial Youtube](https://www.youtube.com/watch?v=P377cNMG4lg&t=32722s)
