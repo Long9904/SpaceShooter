@@ -10,7 +10,7 @@ public class Boss1 : MonoBehaviour
 
     [Header("Movement Limits")]
     public float minX = -1f, maxX = 6f;    // X boundaries
-    public float minY = -3f, maxY = 3f;    // Y boundaries
+    public float minY = -3.9f, maxY = 3.9f;    // Y boundaries
 
     private Animator animator;
 
@@ -21,9 +21,11 @@ public class Boss1 : MonoBehaviour
     [Header("Fire Points")]
     public GameObject laserPrefab;
     public GameObject superBulletPrefab;
-    public Transform firePoint;
-    public float bulletSpeed = 7f;
-    public float fireRate = 3f;
+    public Transform firePoint1;
+    public Transform firePoint2;
+    public Transform firePoint3;
+    public float bulletSpeed = 6f;
+    public float fireRate = 2.8f;
     private float fireTimer;
 
     [Header("Health")]
@@ -46,7 +48,7 @@ public class Boss1 : MonoBehaviour
     public int spiralBullets = 30;
     public float spiralDelay = 0.05f;
     public float spiralAngleStep = 10f;
-    private float angle = 0f;
+    private float angle = 3f;
 
     [Header("Rotation Bullet")]
     public float rotateSpeed = 3f;
@@ -108,8 +110,8 @@ public class Boss1 : MonoBehaviour
         {
             StartCoroutine(DelayShoot());
             fireTimer = 0f;
-            fireRate -= 0.1f; // Increase fire rate over time
-            if (fireRate <= 0.4f) fireRate = 0.5f;
+            fireRate -= 0.05f; // Increase fire rate over time
+            if (fireRate <= 1f) fireRate = 1f;
         } // Normal shooting hen health > 60% or if it's a clone
 
         if (!isClone
@@ -204,8 +206,7 @@ public class Boss1 : MonoBehaviour
 
         Vector3 direction = (playerPos - originalPosition).normalized;
 
-        Vector3 targetPosition = playerPos - direction;
-
+        Vector3 targetPosition = (playerPos - direction) * 1.5f;
 
         while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
@@ -225,40 +226,50 @@ public class Boss1 : MonoBehaviour
     }
     void ShootBullet()
     {
-        Vector3 playerPos = (player.position - firePoint.position).normalized;
-
+        
         if (health <= maxHealth * 0.3f && !isClone)
         {
             BossPlayerController.Instance.damageEarned = 2;
             // Shoot homing super bullet
-            GameObject superBullet = Instantiate(superBulletPrefab, firePoint.position, firePoint.rotation);
+            GameObject superBullet = Instantiate(superBulletPrefab, firePoint1.position, firePoint1.rotation);
 
             HomingBullet homing = superBullet.GetComponent<HomingBullet>();
             if (homing != null)
             {
                 homing.targetObject = player;
-                homing.speed = bulletSpeed + 3f;  // speed up the super bullet
+                homing.speed = bulletSpeed + 2.4f;  // speed up the super bullet
             }
         }
         else
         {
             // Shoot normal laser
-            GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
-            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
-            if (rb != null) rb.linearVelocity = playerPos * bulletSpeed;
+            Vector3 playerPos1 = (player.position - firePoint1.position).normalized;
+            Vector3 playerPos2 = (player.position - firePoint2.position).normalized;
+            Vector3 playerPos3 = (player.position - firePoint3.position).normalized;
+            ShootNormal(firePoint1, playerPos1);
+            ShootNormal(firePoint2, playerPos2);
+            ShootNormal(firePoint3, playerPos3);
         }
+    }
+
+
+    private void ShootNormal (Transform firePoint, Vector3 playerPos)
+    {
+        GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+        Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+        if (rb != null) rb.linearVelocity = playerPos * bulletSpeed;
     }
 
 
     IEnumerator DelayShoot()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.25f);
         ShootBullet();
 
 
-        if (health <= maxHealth * 0.8f)
+        if (health <= maxHealth * 0.75f)
         {
-            yield return new WaitForSeconds(0.2f); // delay 
+            yield return new WaitForSeconds(0.25f); // delay 
             ShootBullet();
         }
 
@@ -328,7 +339,7 @@ public class Boss1 : MonoBehaviour
             float bulletDirY = Mathf.Sin(angle * Mathf.Deg2Rad);
             Vector3 bulletMoveVector = new Vector3(bulletDirX, bulletDirY, 0f);
 
-            GameObject bullet = Instantiate(laserPrefab, firePoint.position, Quaternion.identity);
+            GameObject bullet = Instantiate(laserPrefab, firePoint1.position, Quaternion.identity);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.linearVelocity = bulletMoveVector * bulletSpeed;
 

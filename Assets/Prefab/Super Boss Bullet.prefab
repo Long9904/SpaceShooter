@@ -192,8 +192,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HomingBullet
   targetObject: {fileID: 0}
-  speed: 10
+  speed: 8
   explosionEffectPrefab: {fileID: 1040534402643588798, guid: 61f3d38f754ec2449a4ffa0f6ef5c0de, type: 3}
   target: 1
-  lifeTime: 1.8
+  lifeTime: 1.6
   homingDelay: 1

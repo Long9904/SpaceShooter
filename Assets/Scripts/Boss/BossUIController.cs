@@ -14,7 +14,7 @@ public class BossUIController : MonoBehaviour
 
     [SerializeField] private Slider bossHealthSlider;
     [SerializeField] private TMP_Text bossHealthText;
-
+    public GameObject pausePanel;
 
     void Awake()
     {
