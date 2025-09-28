@@ -508,6 +508,7 @@ MonoBehaviour:
   backgroundMusic: {fileID: 8300000, guid: 448b2866ed090e54fb224837d6eada58, type: 3}
   backgroundBossMusic: {fileID: 8300000, guid: c17b963b87f31f14f87a28c3221321ed, type: 3}
   bossSumon: {fileID: 8300000, guid: e2dadc2d31f12b743ae08043a6b4096b, type: 3}
+  bossDie: {fileID: 8300000, guid: 18db282f79926f04792c639956810211, type: 3}
 --- !u!82 &474897102
 AudioSource:
   m_ObjectHideFlags: 0

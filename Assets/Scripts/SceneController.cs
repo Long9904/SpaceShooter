@@ -42,4 +42,11 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         animator.SetTrigger("Start");
     }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(1);
+        Time.timeScale = 1f;
+    }
+ 
 }

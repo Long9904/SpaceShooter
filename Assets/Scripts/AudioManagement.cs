@@ -16,6 +16,7 @@ public class AudioManagement : MonoBehaviour
     public AudioClip backgroundMusic;
     public AudioClip backgroundBossMusic;
     public AudioClip bossSumon;
+    public AudioClip bossDie;
     private void Awake()
     {
         if (instance == null)
@@ -82,6 +83,13 @@ public class AudioManagement : MonoBehaviour
     {
         source.clip = backgroundBossMusic;
         source.loop = true;
+        source.Play();
+    }
+    public void PlayBossDie()
+    {
+        source.clip = bossDie;
+        source.loop = false;
+        source.volume = 0.4f;
         source.Play();
     }
 }
