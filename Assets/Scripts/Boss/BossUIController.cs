@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class BossUIController : MonoBehaviour
@@ -14,10 +15,16 @@ public class BossUIController : MonoBehaviour
 
     [SerializeField] private Slider bossHealthSlider;
     [SerializeField] private TMP_Text bossHealthText;
+
+    [SerializeField] private TMP_Text scoreText;
     public GameObject pausePanel;
+
+    public float score { get; set; }
 
     void Awake()
     {
+        // take score from previous scene
+        score = BossGameManager.Instance.score;
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -26,6 +33,12 @@ public class BossUIController : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    void Start()
+    {
+        scoreText.text = "Score : " + Mathf.RoundToInt(score);
+        AudioManagement.instance.PlayBackgroundMusic();
     }
 
     public void UpdateEnergySlider(float current, float max)
@@ -47,5 +60,11 @@ public class BossUIController : MonoBehaviour
         bossHealthSlider.maxValue = max;
         bossHealthSlider.value = Mathf.RoundToInt(current);
         bossHealthText.text = bossHealthSlider.value + "/" + bossHealthSlider.maxValue;
+    }
+
+    public void AddScore(float value)
+    {
+        score += value;
+        scoreText.text = "Score : " + Mathf.RoundToInt(score);
     }
 }

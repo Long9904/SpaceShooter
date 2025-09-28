@@ -116,6 +116,10 @@ public class PlayerController : MonoBehaviour
             }
             Parallax.instance.globalSpeed = boost;
             GasDown();
+            if (gas <= 0)
+            {
+                OnGasEmpty();
+            }
 
         }
     }
@@ -178,12 +182,12 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("BulletEn"))
         {
-            TakeDamage(1);
+            TakeDamage(DamageUpdateByTime());
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
-            TakeDamage(1);
+            TakeDamage(DamageUpdateByTime());
             Destroy(collision.gameObject);
         }
 
@@ -202,9 +206,13 @@ public class PlayerController : MonoBehaviour
         if (health <= 0)
         {
             boost = 1f;
-            gameObject.SetActive(false);
+            
             // Clone the destroy effect at the player's position and rotation
             Instantiate(destroyEffect, transform.position, transform.rotation);
+            UIEndGame.Instance.ShowGameOver();
+            gameObject.SetActive(false);
+            AudioManagement.instance.PlayHit();
+            Time.timeScale = 0f;
             return;
         }
         StartCoroutine(GetHit());
@@ -234,5 +242,19 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isHit", true);
         yield return new WaitForSeconds(1.5f);
         animator.SetBool("isHit", false);
+    }
+
+    private int DamageUpdateByTime()
+    {
+        float time = Time.timeSinceLevelLoad;
+        // Increase damage by 1 every 10 seconds, up to a maximum of 3
+        int damage = Mathf.Min(1 + Mathf.FloorToInt(time / 10f), 3);
+        return damage;
+    }
+    private void OnGasEmpty()
+    {
+        TakeDamage(3);
+        gas = maxGas / 2f;
+        UIController.Instance.UpdateGasSlider(gas, maxGas);
     }
 }

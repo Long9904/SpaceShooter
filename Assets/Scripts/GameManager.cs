@@ -63,4 +63,10 @@ public class GameManager : MonoBehaviour
          Destroy(gameObject);
         SceneManager.LoadScene(0);
     }
+
+    public void RestartLevel()
+    {
+        Destroy(gameObject);
+        SceneController.Instance.RestartLevel();
+    }
 }

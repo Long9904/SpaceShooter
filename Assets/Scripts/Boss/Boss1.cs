@@ -305,9 +305,19 @@ public class Boss1 : MonoBehaviour
 
         if (health <= 0)
         {
+            BossUIController.Instance.AddScore(500);
             gameObject.SetActive(false);
+
             // Clone the destroy effect at the player's position and rotation
             Instantiate(destroyEffect, transform.position, transform.rotation);
+
+            if (!isClone)
+            {
+                // Only the main boss plays the die sound and stops the music
+                AudioManagement.instance.PlayBossDie();
+                UIEndGame.Instance.ShowGameOver();
+                Time.timeScale = 0f;
+            }
             return;
         }
 

@@ -7,9 +7,11 @@ public class BossGameManager : MonoBehaviour
 
     public float worldSpeed;
 
-    public float ScoreWin = 200f;
+    public float score;
     void Awake()
     {
+        // take score from previous scene
+        score = GameManager.Instance.ScoreWin;
         if (Instance == null)
         {
             Instance = this;
@@ -27,6 +29,7 @@ public class BossGameManager : MonoBehaviour
     }
     private void Update()
     {
+        BossUIController.Instance.AddScore(Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -59,5 +62,10 @@ public class BossGameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void RestartLevel()
+    {
+        Destroy(gameObject);
+        SceneController.Instance.RestartLevel();
     }
 }

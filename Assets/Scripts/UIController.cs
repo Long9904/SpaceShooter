@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
     public float score { get; set; }
     public GameObject pausePanel;
-  
+
     void Awake()
     {
         if (Instance != null)

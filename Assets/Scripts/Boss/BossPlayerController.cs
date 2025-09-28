@@ -178,6 +178,9 @@ public class BossPlayerController : MonoBehaviour
             gameObject.SetActive(false);
             // Clone the destroy effect at the player's position and rotation
             Instantiate(destroyEffect, transform.position, transform.rotation);
+            AudioManagement.instance.PlayHit();
+            UIEndGame.Instance.ShowGameOver();
+            Time.timeScale = 0f;
             return;
         }
         StartCoroutine(GetHit());
