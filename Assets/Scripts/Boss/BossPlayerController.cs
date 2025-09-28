@@ -137,7 +137,7 @@ public class BossPlayerController : MonoBehaviour
         }
     }
 
-    private void ExitBoost()
+    public void ExitBoost()
     {
         animator.SetBool("isBoost", false);
         boost = 1f;

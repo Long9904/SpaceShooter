@@ -35,6 +35,7 @@ public class SceneController : MonoBehaviour
     }
     IEnumerator LoadLevel()
     {
+        AudioManagement.instance.StopMusic();
         isLoading = true;
         animator.SetTrigger("End");
         yield return new WaitForSeconds(1f);
