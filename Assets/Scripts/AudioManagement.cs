@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AudioManagement : MonoBehaviour
@@ -13,6 +14,7 @@ public class AudioManagement : MonoBehaviour
     public AudioClip lootItem;
     public AudioClip cutsceneBoss;
     public AudioClip hitEn;
+    public AudioClip backgroundMenuMusic;
     public AudioClip backgroundMusic;
     public AudioClip backgroundBossMusic;
     public AudioClip bossSumon;
@@ -74,7 +76,7 @@ public class AudioManagement : MonoBehaviour
         source.loop = true;
         source.Play();
     }
-   
+
     public void StopMusic()
     {
         source.Stop();
@@ -85,11 +87,16 @@ public class AudioManagement : MonoBehaviour
         source.loop = true;
         source.Play();
     }
-    public void PlayBossDie()
+    public IEnumerator PlayBossDie()
     {
-        source.clip = bossDie;
-        source.loop = false;
-        source.volume = 0.4f;
+        source.PlayOneShot(bossDie);
+        yield return new WaitForSeconds(3);
+        StopMusic();
+    }
+    public void PlayBackgroundMenuMusic()
+    {
+        source.clip = backgroundMenuMusic;
+        source.loop = true;
         source.Play();
     }
 }

@@ -314,7 +314,7 @@ public class Boss1 : MonoBehaviour
             if (!isClone)
             {
                 // Only the main boss plays the die sound and stops the music
-                AudioManagement.instance.PlayBossDie();
+                StartCoroutine(AudioManagement.instance.PlayBossDie());
                 UIEndGame.Instance.ShowGameOver();
                 Time.timeScale = 0f;
             }
