@@ -55,7 +55,9 @@ public class BossGameManager : MonoBehaviour
 
     public void ReturnMainMenu()
     {
+        AudioManagement.instance.PlayBackgroundMenuMusic();
         Destroy(gameObject);
+
         SceneManager.LoadScene(0);
     }
 

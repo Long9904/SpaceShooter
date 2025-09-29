@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   worldSpeed: 0
-  ScoreWin: 500
+  ScoreWin: 50
 --- !u!114 &229811771
 MonoBehaviour:
   m_ObjectHideFlags: 0
