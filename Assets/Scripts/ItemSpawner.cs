@@ -1,5 +1,3 @@
-using Unity.Hierarchy;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour

@@ -45,6 +45,7 @@ public class SceneController : MonoBehaviour
 
     public void RestartLevel()
     {
+        AudioManagement.instance.PlayBackgroundMusic();
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;
     }
